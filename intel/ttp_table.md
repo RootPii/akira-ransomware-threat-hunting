@@ -51,15 +51,15 @@
 
 | Priority | Technique | Why It Matters |
 |----------|-----------|----------------|
-| 🔴 Critical | T1490 — VSS Deletion | Present in nearly all documented attacks; any instance = incident-level response |
-| 🔴 Critical | T1070.001 — Log Clearing | EID 1102 / EID 104 have almost no legitimate use in production |
-| 🔴 Critical | T1486 — Ransomware | `akira_readme.txt` is a low-noise, confirmed IOC |
-| 🟠 High | T1003.001 — LSASS Dump | Sysmon EID 10 against LSASS from an unrecognized process is a reliable, low-noise signal |
-| 🟠 High | T1572 — Ngrok | Internal `ngrok.io` DNS resolution has very limited legitimate enterprise use |
-| 🟠 High | T1021.001 — RDP to DC | Workstation → DC via Logon Type 10 is rarely legitimate |
-| 🟡 Medium | T1087.002 — AD Enumeration | SharpHound / AdFind execution is a reliable pre-lateral-movement indicator |
-| 🟡 Medium | T1136 — Account Creation | EID 4720 → 4732 rapid sequence is a consistent persistence signal |
-| 🟡 Medium | T1560.001 — Data Staging | Large archive creation in temp/public paths warrants investigation |
+| 🔴 Critical | T1490 - VSS Deletion | Present in nearly all documented attacks; any instance = incident-level response |
+| 🔴 Critical | T1070.001 - Log Clearing | EID 1102 / EID 104 have almost no legitimate use in production |
+| 🔴 Critical | T1486 - Ransomware | `akira_readme.txt` is a low-noise, confirmed IOC |
+| 🟠 High | T1003.001 - LSASS Dump | Sysmon EID 10 against LSASS from an unrecognized process is a reliable, low-noise signal |
+| 🟠 High | T1572 - Ngrok | Internal `ngrok.io` DNS resolution has very limited legitimate enterprise use |
+| 🟠 High | T1021.001 - RDP to DC | Workstation → DC via Logon Type 10 is rarely legitimate |
+| 🟡 Medium | T1087.002 - AD Enumeration | SharpHound / AdFind execution is a reliable pre-lateral-movement indicator |
+| 🟡 Medium | T1136 - Account Creation | EID 4720 → 4732 rapid sequence is a consistent persistence signal |
+| 🟡 Medium | T1560.001 - Data Staging | Large archive creation in temp/public paths warrants investigation |
 
 ---
 
