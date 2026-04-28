@@ -4,7 +4,7 @@
 **Coverage:** 2023–2026 (validated against CISA AA24-109A Nov 2025, Unit 42 Howling Scorpius, IBM X-Force, Halcyon, Picus Security Feb 2026)
 **Status:** Living document - update as new intrusions come in
 
-> Cross-reference → `artifacts/command_patterns.md` for full command details, `intel/ttp_table.md` for MITRE mapping.
+> Cross-reference : `artifacts/command_patterns.md` for full command details, `intel/ttp_table.md` for MITRE mapping.
 > Payload internals and CVE details live in `intel/threat_actor_profile.md`.
 
 ---
