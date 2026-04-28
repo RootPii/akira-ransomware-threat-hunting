@@ -15,7 +15,7 @@ These are the signals that usually matter most during an investigation. If you'r
 
 Pre-encryption:
 - VSS deletion (any method)
-- Log clearing — EID 1102 + EID 104 in the same session window
+- Log clearing - EID 1102 + EID 104 in the same session window
 
 High confidence:
 - LSASS access from a non-security process
