@@ -2,7 +2,7 @@
 
 **Purpose:** Investigation-facing notes on what analysts actually see on compromised systems.
 **Coverage:** 2023–2026 (validated against CISA AA24-109A Nov 2025, Unit 42 Howling Scorpius, IBM X-Force, Halcyon, Picus Security Feb 2026)
-**Status:** Living document — update as new intrusions come in
+**Status:** Living document - update as new intrusions come in
 
 > Cross-reference → `artifacts/command_patterns.md` for full command details, `intel/ttp_table.md` for MITRE mapping.
 > Payload internals and CVE details live in `intel/threat_actor_profile.md`.
@@ -19,7 +19,7 @@ Notes are dropped into **every encrypted directory**, not just root.
 
 | Filename | Location | Context |
 |---|---|---|
-| `akira_readme.txt` | `C:\`, `C:\Users\*`, every encrypted dir | Windows — consistent since 2023 |
+| `akira_readme.txt` | `C:\`, `C:\Users\*`, every encrypted dir | Windows - consistent since 2023 |
 | `fn.txt` | `C:\`, `C:\Users\*` | Akira_v2 Windows variant |
 | `akiranew.txt` | Directories with newly encrypted files | Akira_v2 Linux / ESXi |
 
@@ -32,13 +32,13 @@ Notes contain no ransom amount — only a unique victim code and a `.onion` URL.
 | `.akira` | C++ original / Akira_v2 (Windows) |
 | `.akiranew` | Akira_v2 (Linux / ESXi) |
 | `.aki` | Akira_v2 (some Windows incidents) |
-| `.powerranges` | Megazord — largely out of use since 2024 |
+| `.powerranges` | Megazord - largely out of use since 2024 |
 
 > During large-file encryption, a `.arika` (not `.akira`) temp file may briefly appear on Hyper-V and ESXi systems. It's an auto-save artifact from the encryptor, not a separate strain.
 
 ### Known Encryptor Hashes
 
-Filenames change between campaigns — don't rely on these as the only detection layer.
+Filenames change between campaigns - don't rely on these as the only detection layer.
 
 | Filename | SHA-256 |
 |---|---|
@@ -78,21 +78,21 @@ The gap between these two events is usually seconds to minutes. That rapid seque
 
 Two methods come up consistently across incidents:
 
-**`[HIGH CONFIDENCE]` `[LOW NOISE]` LSASS via comsvcs.dll (living off the land)** — detected via Sysmon EID 10 (`ProcessAccess` on `lsass.exe` from `rundll32.exe`). When you see this, credentials are likely already stolen. Treat it as an urgent escalation signal.
+**`[HIGH CONFIDENCE]` `[LOW NOISE]` LSASS via comsvcs.dll (living off the land)** - detected via Sysmon EID 10 (`ProcessAccess` on `lsass.exe` from `rundll32.exe`). When you see this, credentials are likely already stolen. Treat it as an urgent escalation signal.
 
-**Mimikatz and LaZagne** — seen in several environments as dropped binaries, sometimes renamed to blend in with legitimate tools. LaZagne goes after browser and application passwords; Mimikatz handles pass-the-hash and Kerberos tickets. Rubeus has also appeared in some 2025 incidents for Kerberoasting.
+**Mimikatz and LaZagne** - seen in several environments as dropped binaries, sometimes renamed to blend in with legitimate tools. LaZagne goes after browser and application passwords; Mimikatz handles pass-the-hash and Kerberos tickets. Rubeus has also appeared in some 2025 incidents for Kerberoasting.
 
-**NTDS.dit via offline VMDK** — observed in at least one 2025 case where operators powered down a DC VM, copied its VMDK, mounted it on a new VM, then pulled NTDS.dit and the SYSTEM hive from the offline disk. No LSASS process access, so standard alerts won't fire. Look for unexpected VMDK copy events on the hypervisor and new VM creation as the tell.
+**NTDS.dit via offline VMDK** - observed in at least one 2025 case where operators powered down a DC VM, copied its VMDK, mounted it on a new VM, then pulled NTDS.dit and the SYSTEM hive from the offline disk. No LSASS process access, so standard alerts won't fire. Look for unexpected VMDK copy events on the hypervisor and new VM creation as the tell.
 
 ---
 
 ## 3. Defense Evasion
 
-### EDR Killing — Two Paths Observed
+### EDR Killing - Two Paths Observed
 
-**PCHunter64 / PowerTool** — kernel-level tools for terminating EDR processes, seen across multiple reports. Look for the binary executing, a driver loading from a non-standard path, and a security agent process dying with no preceding stop command.
+**PCHunter64 / PowerTool** - kernel-level tools for terminating EDR processes, seen across multiple reports. Look for the binary executing, a driver loading from a non-standard path, and a security agent process dying with no preceding stop command.
 
-**POORTRY + STONESTOP (2025 — high priority)** — STONESTOP installs POORTRY, a signed malicious kernel driver that terminates AV/EDR processes. Confirmed in Akira intrusions and shared across other RaaS groups. This is a high-confidence intrusion signal when combined with other artifacts.
+**POORTRY + STONESTOP (2025 - high priority)** - STONESTOP installs POORTRY, a signed malicious kernel driver that terminates AV/EDR processes. Confirmed in Akira intrusions and shared across other RaaS groups. This is a high-confidence intrusion signal when combined with other artifacts.
 
 Detection angle:
 - Sysmon EID 6 (DriverLoad) from a user-writable directory
@@ -107,13 +107,13 @@ Detection angle:
 
 ### Recon Pattern
 
-Reported in several environments: a burst of native Windows reconnaissance commands executed in rapid succession from a single remote session — `whoami`, `net user`, `ipconfig`, `arp`, `route print`, AD/domain queries. No single command here is malicious on its own; it's the velocity and the session context that matter.
+Reported in several environments: a burst of native Windows reconnaissance commands executed in rapid succession from a single remote session - `whoami`, `net user`, `ipconfig`, `arp`, `route print`, AD/domain queries. No single command here is malicious on its own; it's the velocity and the session context that matter.
 
 Seeing 5–6 of these within a few minutes of an unusual remote logon is a reliable scripted-recon indicator.
 
 ### AD Enumeration
 
-SharpHound, AdFind, and `nltest` show up across Akira incident reports as the go-to tools before lateral movement. SharpHound drops a ZIP with BloodHound-compatible JSON — unexplained `.zip` files in temp directories after these events are worth examining.
+SharpHound, AdFind, and `nltest` show up across Akira incident reports as the go-to tools before lateral movement. SharpHound drops a ZIP with BloodHound-compatible JSON - unexplained `.zip` files in temp directories after these events are worth examining.
 
 ### Network Scanning
 
@@ -121,7 +121,7 @@ NetScan and Advanced IP Scanner are both noted in IR reports. The NetFlow artifa
 
 ### Lateral Movement
 
-Impacket's `wmiexec` comes up consistently for remote execution without touching disk on the target. The process tree on the victim side — `WmiPrvSE.exe` spawning `cmd.exe` or PowerShell — is the main Sysmon artifact. PsExec, RDP, and SSH are also used depending on what's available in the environment.
+Impacket's `wmiexec` comes up consistently for remote execution without touching disk on the target. The process tree on the victim side - `WmiPrvSE.exe` spawning `cmd.exe` or PowerShell — is the main Sysmon artifact. PsExec, RDP, and SSH are also used depending on what's available in the environment.
 
 ---
 
@@ -135,7 +135,7 @@ Detection: `vssadmin`, `wmic shadowcopy delete`, or PowerShell-based shadow copy
 
 ### `[PRE-ENCRYPTION]` `[HIGH CONFIDENCE]` Log Clearing
 
-`wevtutil` clearing the Security and System logs is seen across incidents — typically in the same session window as VSS deletion. Generates EID 1102 (Security log cleared) and EID 104 (System log cleared). **Catching both in the same window alongside other artifacts is a very strong indicator that encryption follows shortly.**
+`wevtutil` clearing the Security and System logs is seen across incidents - typically in the same session window as VSS deletion. Generates EID 1102 (Security log cleared) and EID 104 (System log cleared). **Catching both in the same window alongside other artifacts is a very strong indicator that encryption follows shortly.**
 
 ---
 
@@ -171,7 +171,7 @@ Network artifact: large outbound transfers to Mega, cloud SFTP, or FTP endpoints
 
 ### Scheduled Tasks
 
-Tasks created for callback persistence — typically named to resemble system tasks. Binary path usually points to a user-writable directory.
+Tasks created for callback persistence - typically named to resemble system tasks. Binary path usually points to a user-writable directory.
 
 ```
 EID 4698: Scheduled task created
@@ -223,7 +223,7 @@ Use it alongside:
 - `artifacts/command_patterns.md` → full command-level detail when you need it
 - `analysis/attack_timeline.md` → sequencing artifacts into an intrusion timeline
 
-Don't hunt on single indicators. The value here is correlation — multiple signals from the same timeframe or session window are far more reliable than any individual artifact. The patterns in Section 9 are a good starting anchor.
+Don't hunt on single indicators. The value here is correlation - multiple signals from the same timeframe or session window are far more reliable than any individual artifact. The patterns in Section 9 are a good starting anchor.
 
 ---
 
