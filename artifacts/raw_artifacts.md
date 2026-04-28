@@ -11,7 +11,7 @@
 
 ## 1. Filesystem Artifacts
 
-These are the most reliable post-incident indicators — low noise, high fidelity.
+These are the most reliable post-incident indicators - low noise, high fidelity.
 
 ### Ransom Notes
 
