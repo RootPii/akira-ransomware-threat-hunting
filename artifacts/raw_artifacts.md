@@ -1,4 +1,4 @@
-# Akira Ransomware — Raw Artifacts
+# Akira Ransomware - Raw Artifacts
 
 **Purpose:** Investigation-facing notes on what analysts actually see on compromised systems.
 **Coverage:** 2023–2026 (validated against CISA AA24-109A Nov 2025, Unit 42 Howling Scorpius, IBM X-Force, Halcyon, Picus Security Feb 2026)
