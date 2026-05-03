@@ -103,7 +103,7 @@ Purpose:
 Profile file share contents before staging exfiltration.
 
 Notes:
-- Observed delivered via scheduled task disguised as "Windows Update" (Sophos MDR)
+- Seen delivered via scheduled task disguised as "Windows Update" (Sophos MDR)
 - Avoids interactive sessions that are more likely to generate alerts
 - Output file path in C:\ProgramData is typical staging behavior
 ```
@@ -161,7 +161,7 @@ Notes:
 - privilege::debug requests SeDebugPrivilege, required to read LSASS memory
 - sekurlsa::logonPasswords pulls cached session data including hashes
 - Typically dropped to a temp directory, sometimes renamed to blend in
-- LaZagne is also observed in some incidents for browser and application credentials
+- LaZagne is also noted in some incidents for browser and application credentials
 ```
 
 ### NTDS.dit — Active Directory Database Dump
@@ -402,8 +402,7 @@ Sync targeted file shares directly to attacker-controlled cloud storage.
 Notes:
 - --multi-thread-streams 25 --transfers 25 → up to 625 concurrent connections — aggressive and visible in NetFlow
 - Exclusion list targets documents and databases — not binaries or media
-- Destination in documented incidents: attacker-controlled SFTP over port 22
-- Rclone has been observed renamed (e.g., svchost.exe) and run from C:\Users\Public\
+- Seen renamed (e.g., svchost.exe) and run from C:\Users\Public\
 
 Detection hint:
 rclone.exe (or a renamed binary) executing from outside Program Files is high-confidence. Check for WinRAR/7-Zip archive creation in the same timeframe — staging usually precedes transfer.
